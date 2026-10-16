@@ -28,13 +28,16 @@ export function edgeLength(nodes, edge) {
 // coordinates. Three naming layers apply in priority order:
 //   1. binOverrides["rackId|bayIndex|level"] — wins over everything
 //   2. Per-rack fields: rowToken, bayStart, bayReverse
-//   3. Top-level naming: { separator, bayPad }
+//   3. Top-level naming: { separator, bayPad, levelPad? }
+//      levelPad is optional (default 1 = no padding, e.g. C-01-1); set 2 for
+//      zero-padded levels such as G5-04-01-07.
 // z is computed cumulatively from r.levelHeights via levelBaseZ().
 export function expandBins(state) {
   const naming = state.naming ?? { separator: '-', bayPad: 2 };
   const overrides = state.binOverrides ?? {};
   const sep = typeof naming.separator === 'string' ? naming.separator : '-';
   const bayPad = Number.isInteger(naming.bayPad) && naming.bayPad >= 1 ? naming.bayPad : 2;
+  const levelPad = Number.isInteger(naming.levelPad) && naming.levelPad >= 1 ? naming.levelPad : 1;
   const bins = [];
   for (const r of state.racks) {
     const t = state.binTypes[r.type];
@@ -58,7 +61,7 @@ export function expandBins(state) {
       const bayStr = String(bayNum).padStart(bayPad, '0');
       for (let l = 1; l <= effectiveLevels; l++) {
         const overrideKey = `${r.id}|${b}|${l}`;
-        const generated = `${rowToken}${sep}${bayStr}${sep}${l}`;
+        const generated = `${rowToken}${sep}${bayStr}${sep}${String(l).padStart(levelPad, '0')}`;
         const whse_location = overrides[overrideKey] ?? generated;
         bins.push({
           bin_label: whse_location,

@@ -64,6 +64,11 @@ def validate_layout(layout) -> list[str]:
         bay_pad = naming.get("bayPad")
         if not isinstance(bay_pad, int) or isinstance(bay_pad, bool) or bay_pad < 1:
             errors.append("naming.bayPad must be a positive integer")
+        level_pad = naming.get("levelPad")
+        if level_pad is not None and (
+            not isinstance(level_pad, int) or isinstance(level_pad, bool) or level_pad < 1
+        ):
+            errors.append("naming.levelPad must be a positive integer when present")
 
     # binOverrides
     bin_overrides = layout.get("binOverrides")
