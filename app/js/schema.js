@@ -59,6 +59,8 @@ export function validateLayout(layout) {
     if (typeof naming.separator !== 'string') push('naming.separator must be a string');
     if (!Number.isInteger(naming.bayPad) || naming.bayPad < 1)
       push('naming.bayPad must be a positive integer');
+    if (naming.levelPad != null && (!Number.isInteger(naming.levelPad) || naming.levelPad < 1))
+      push('naming.levelPad must be a positive integer when present');
   }
 
   // binOverrides
