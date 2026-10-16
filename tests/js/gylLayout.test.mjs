@@ -47,7 +47,7 @@ test('levelPad absent keeps legacy unpadded levels', () => {
   assert.ok(expandBins(legacy).some((b) => b.whse_location === 'G5-04-01-7'));
 });
 
-test('CSV splits label into building/rack/position/level', () => {
+test('CSV splits label into building/rack(칸)/column(열)/level', () => {
   const csv = toCsv([{ whse_location: 'G5-04-01-07' }]);
   assert.equal(csv.split('\n')[1], 'G5-04-01-07,5,04,01,07');
 });

@@ -17,8 +17,8 @@
     },
     "bin_label_format": {
       "field_name": "whse_location",
-      "pattern": "G{building}-{rack:02d}-{position:02d}-{level:02d}",
-      "note": "GY Logis 4-part key: building, rack (01-16), position (01-31), level (01-07). Physical dimensions are placeholders pending site survey."
+      "pattern": "G{building}-{rack:02d}-{column:02d}-{level:02d}",
+      "note": "GY Logis 4-part key: building (동), rack (칸, 01-16), column (열, 01-31), level (층, 01-07). Physical dimensions are placeholders pending site survey."
     }
   },
   "settings": {

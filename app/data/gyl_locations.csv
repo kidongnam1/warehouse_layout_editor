@@ -1,4 +1,4 @@
-whse_location,building,rack,position,level
+whse_location,building,rack,column,level
 G5-01-01-01,5,01,01,01
 G5-01-01-02,5,01,01,02
 G5-01-01-03,5,01,01,03

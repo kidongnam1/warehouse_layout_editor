@@ -1,10 +1,11 @@
 // gen_gyl_layout.mjs — build the GY Logis Gwangyang G5/G6 layout.
 //
-// Location format: G{building}-{rack:02}-{position:02}-{level:02}
-//   e.g. G5-04-01-07 = building 5, rack 04, position 01, level 07
+// Location format: G{building}-{rack:02}-{column:02}-{level:02}
+//   site terms: 동 - 칸(랙 번호) - 열 - 층
+//   e.g. G5-04-01-07 = 5동, 4칸(4번 랙), 1열, 7층
 //
-// Racks 01–03 and 14–16 have 6 levels; racks 04–13 have 7 levels.
-// Every rack has 31 positions.
+// Racks (칸) 01–03 and 14–16 have 6 levels; racks 04–13 have 7 levels.
+// Every rack has 31 columns (열).
 //
 // PHYSICAL DIMENSIONS ARE PLACEHOLDERS until a site survey replaces them:
 // position width, rack depth, level height, aisle width and building gap.
@@ -22,10 +23,10 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 export const BUILDINGS = ['5', '6'];
 export const RACK_COUNT = 16;
-export const POSITIONS = 31;
+export const POSITIONS = 31; // columns (열) per rack
 
 // Placeholder geometry (metres) — replace with surveyed values.
-const POS_W = 1.4; // width of one position along the rack
+const POS_W = 1.4; // width of one column (열) along the rack
 const RACK_D = 1.2; // rack depth
 const LEVEL_H = 1.6; // height of one level
 const AISLE = 3.5; // aisle between racks
@@ -83,8 +84,8 @@ export function buildState() {
       name: 'GY LOGIS GWANGYANG G5/G6',
       bin_label_format: {
         field_name: 'whse_location',
-        pattern: 'G{building}-{rack:02d}-{position:02d}-{level:02d}',
-        note: 'GY Logis 4-part key: building, rack (01-16), position (01-31), level (01-07). Physical dimensions are placeholders pending site survey.',
+        pattern: 'G{building}-{rack:02d}-{column:02d}-{level:02d}',
+        note: 'GY Logis 4-part key: building (동), rack (칸, 01-16), column (열, 01-31), level (층, 01-07). Physical dimensions are placeholders pending site survey.',
       },
     },
     settings: { snap: 0.5, grid: 1 },
@@ -100,10 +101,10 @@ export function buildState() {
 }
 
 export function toCsv(bins) {
-  const lines = ['whse_location,building,rack,position,level'];
+  const lines = ['whse_location,building,rack,column,level'];
   for (const b of bins) {
-    const [g, rack, pos, lvl] = b.whse_location.split('-');
-    lines.push(`${b.whse_location},${g.slice(1)},${rack},${pos},${lvl}`);
+    const [g, rack, col, lvl] = b.whse_location.split('-');
+    lines.push(`${b.whse_location},${g.slice(1)},${rack},${col},${lvl}`);
   }
   return lines.join('\n') + '\n';
 }
